@@ -1,0 +1,4 @@
+enum CommandInvocationSource {
+    Chat,
+    Direct
+}
