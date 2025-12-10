@@ -75,6 +75,7 @@ sealed class Loader : MonoBehaviour {
         Loader.AddHaxModules<KillClickMod>();
         Loader.AddHaxModules<CrosshairMod>();
         Loader.AddHaxModules<MinimalGUIMod>();
+        Loader.AddHaxModules<MenuGUIMod>();
         Loader.AddHaxModules<PossessionMod>();
         Loader.AddHaxModules<DisconnectMod>();
         Loader.AddHaxModules<ClearVisionMod>();

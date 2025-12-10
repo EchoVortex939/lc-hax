@@ -26,6 +26,7 @@ sealed class InputListener : MonoBehaviour {
     internal static event Action? OnF4Press;
     internal static event Action? OnF5Press;
     internal static event Action? OnF9Press;
+    internal static event Action? OnMPress;
     internal static event Action<bool>? OnRightButtonHold;
 
     (Func<bool>, Action)[] InputActions { get; } = [
@@ -44,6 +45,7 @@ sealed class InputListener : MonoBehaviour {
         (() => Keyboard.current[Key.Z].wasPressedThisFrame, () => InputListener.OnZPress?.Invoke()),
         (() => Keyboard.current[Key.X].wasPressedThisFrame, () => InputListener.OnXPress?.Invoke()),
         (() => Keyboard.current[Key.N].wasPressedThisFrame, () => InputListener.OnNPress?.Invoke()),
+        (() => Keyboard.current[Key.M].wasPressedThisFrame, () => InputListener.OnMPress?.Invoke()),
         (() => Keyboard.current[Key.UpArrow].wasPressedThisFrame, () => InputListener.OnUpArrowPress?.Invoke()),
         (() => Keyboard.current[Key.DownArrow].wasPressedThisFrame, () => InputListener.OnDownArrowPress?.Invoke()),
         (() => Keyboard.current[Key.F4].wasPressedThisFrame, () => InputListener.OnF4Press?.Invoke()),
