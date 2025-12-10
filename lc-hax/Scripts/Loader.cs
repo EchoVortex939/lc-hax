@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using Hax.GUI;
 using UnityEngine;
 
 namespace Hax;
@@ -74,12 +75,14 @@ sealed class Loader : MonoBehaviour {
         Loader.AddHaxModules<StunClickMod>();
         Loader.AddHaxModules<KillClickMod>();
         Loader.AddHaxModules<CrosshairMod>();
+        Loader.AddHaxModules<GUIMod>();
         Loader.AddHaxModules<MinimalGUIMod>();
         Loader.AddHaxModules<MenuGUIMod>();
         Loader.AddHaxModules<PossessionMod>();
         Loader.AddHaxModules<DisconnectMod>();
         Loader.AddHaxModules<ClearVisionMod>();
         Loader.AddHaxModules<InstantInteractMod>();
+        Loader.AddHaxModules<CommandMenuMod>();
     }
 
     internal static void Unload() {

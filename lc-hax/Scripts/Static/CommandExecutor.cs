@@ -30,7 +30,7 @@ static class CommandExecutor {
             type => (ICommand)new PrivilegedCommand((ICommand)Activator.CreateInstance(type))
         );
 
-    internal static async Task<CommandResult> ExecuteAsync(string syntax, Arguments args) {
+    internal static async Task<CommandResult> ExecuteAsync(string syntax, Arguments args, CommandInvocationSource source) {
         try {
             ICommand? command =
                 CommandExecutor.Commands.GetValue(syntax) ??
@@ -39,24 +39,27 @@ static class CommandExecutor {
 
             if (command is null) {
                 string message = "The command is not found!";
-                Logger.Write($"Command not found: {syntax}");
+                Logger.Write($"Command not found: {syntax} (source: {source})");
                 return new CommandResult(Success: false, Message: message);
             }
 
             using CancellationTokenSource cancellationTokenSource = new();
             await command.Execute(args, cancellationTokenSource.Token);
+
             return new CommandResult(Success: true);
         }
-
         catch (Exception exception) {
-            Logger.Write(exception.ToString());
-            return new CommandResult(Success: false, Message: exception.Message);
+            Logger.Write(exception);
+            return new CommandResult(Success: false, Message: exception.Message, Exception: exception);
         }
     }
 
-    internal static CommandResult ExecuteDirect(string syntax, params string[] args) {
-        Task<CommandResult> task = CommandExecutor.ExecuteAsync(syntax, (Arguments)args);
-        task.Wait();
-        return task.Result;
+    internal static async void ExecuteDirect(string syntax, params string[] args) {
+        Arguments arguments = args;
+        CommandResult result = await CommandExecutor.ExecuteAsync(syntax, arguments, CommandInvocationSource.Direct);
+
+        if (!result.Success && result.Message is not null) {
+            Logger.Write($"Command '{syntax}' failed: {result.Message}");
+        }
     }
 }
