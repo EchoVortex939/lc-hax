@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 sealed class TeleportLocationMenu : IMenu {
@@ -69,7 +70,9 @@ sealed class TeleportLocationMenu : IMenu {
 
         if (!isValidX || !isValidY || !isValidZ) return;
 
-        CommandResult result = CommandExecutor.ExecuteDirect("tp", x.ToString(), y.ToString(), z.ToString());
-        TeleportationMenuManager.StatusMessage = result.Success ? "Teleported successfully" : result.Message ?? "Teleportation failed";
+        _ = Task.Run(async () => {
+            CommandResult result = await CommandExecutor.ExecuteAsync("tp", new[] { x.ToString(), y.ToString(), z.ToString() }, CommandInvocationSource.Direct);
+            TeleportationMenuManager.StatusMessage = result.Success ? "Teleported successfully" : result.Message ?? "Teleportation failed";
+        });
     }
 }

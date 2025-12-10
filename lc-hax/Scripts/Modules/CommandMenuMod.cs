@@ -85,10 +85,9 @@ sealed class CommandMenuMod : MonoBehaviour {
     }
 
     void ExecuteCommand(CommandButton button) {
-        CommandExecutor.Execute(button.CommandSyntax, button.Args, result => {
-            this.StatusMessage = result.Success ? $"✓ {button.Label}" : $"✗ {result.Message ?? "Failed"}";
-            this.StatusMessageTime = CommandMenuMod.StatusMessageDuration;
-        });
+        CommandExecutor.ExecuteDirect(button.CommandSyntax, button.Args ?? []);
+        this.StatusMessage = $"Executing {button.Label}...";
+        this.StatusMessageTime = CommandMenuMod.StatusMessageDuration;
     }
 
     void ToggleMenu() => this.IsVisible = !this.IsVisible;

@@ -1,4 +1,5 @@
 using GameNetcodeStuff;
+using System.Threading.Tasks;
 using UnityEngine;
 
 sealed class TeleportPlayerMenu : IMenu {
@@ -64,7 +65,9 @@ sealed class TeleportPlayerMenu : IMenu {
         }
 
         PlayerControllerB selectedPlayer = activePlayers[this.SelectedPlayerIndex];
-        CommandResult result = CommandExecutor.ExecuteDirect("tp", selectedPlayer.playerUsername);
-        TeleportationMenuManager.StatusMessage = result.Success ? "Teleported successfully" : result.Message ?? "Teleportation failed";
+        _ = Task.Run(async () => {
+            CommandResult result = await CommandExecutor.ExecuteAsync("tp", new[] { selectedPlayer.playerUsername }, CommandInvocationSource.Direct);
+            TeleportationMenuManager.StatusMessage = result.Success ? "Teleported successfully" : result.Message ?? "Teleportation failed";
+        });
     }
 }
