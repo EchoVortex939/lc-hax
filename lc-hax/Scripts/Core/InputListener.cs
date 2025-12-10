@@ -73,6 +73,10 @@ sealed class InputListener : MonoBehaviour {
         InputListener.OnEButtonHold?.Invoke(Keyboard.current[Key.E].isPressed);
         InputListener.OnRightButtonHold?.Invoke(Mouse.current.rightButton.isPressed);
 
+        if (Keyboard.current[Key.Insert].wasPressedThisFrame) {
+            Logger.Write("InputListener: Insert key detected, invoking OnInsertPress");
+        }
+
         foreach ((Func<bool> keyPressed, Action eventAction) in this.InputActions) {
             if (!keyPressed()) continue;
             eventAction();

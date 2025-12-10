@@ -19,14 +19,19 @@ sealed class CommandMenuMod : MonoBehaviour {
     }
 
     void OnEnable() {
+        Logger.Write("CommandMenuMod: OnEnable called");
+        InputListener.OnInsertPress += this.ToggleMenu;
         InputListener.OnMPress += this.ToggleMenu;
         InputListener.OnNumpad8Press += this.NavigateUp;
         InputListener.OnNumpad2Press += this.NavigateDown;
         InputListener.OnNumpad5Press += this.ExecuteSelected;
         this.InitializeCategories();
+        Logger.Write("CommandMenuMod: Subscribed to all events");
     }
 
     void OnDisable() {
+        Logger.Write("CommandMenuMod: OnDisable called");
+        InputListener.OnInsertPress -= this.ToggleMenu;
         InputListener.OnMPress -= this.ToggleMenu;
         InputListener.OnNumpad8Press -= this.NavigateUp;
         InputListener.OnNumpad2Press -= this.NavigateDown;
@@ -149,6 +154,7 @@ sealed class CommandMenuMod : MonoBehaviour {
     void ToggleMenu() {
         this.MenuVisible = !this.MenuVisible;
         this.CurrentCommandIndex = 0;
+        Logger.Write($"CommandMenuMod: Menu toggled to {this.MenuVisible}");
     }
 
     void NavigateUp() {
@@ -199,6 +205,7 @@ sealed class CommandMenuMod : MonoBehaviour {
     void OnGUI() {
         if (!this.MenuVisible) return;
 
+        Logger.Write("CommandMenuMod: Drawing menu");
         GUILayout.BeginArea(new Rect(50, 50, 500, 600));
 
         this.DrawMenu();

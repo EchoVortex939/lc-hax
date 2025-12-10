@@ -52,6 +52,8 @@ sealed class AdvancedCommandMenuMod : MonoBehaviour {
     }
 
     void OnEnable() {
+        Logger.Write("AdvancedCommandMenuMod: OnEnable called");
+        InputListener.OnInsertPress += this.ToggleMenu;
         InputListener.OnMPress += this.ToggleMenu;
         InputListener.OnNumpad8Press += this.NavigateUp;
         InputListener.OnNumpad2Press += this.NavigateDown;
@@ -62,9 +64,12 @@ sealed class AdvancedCommandMenuMod : MonoBehaviour {
 
         InitializeCategories();
         this.LoadWindowPosition();
+        Logger.Write("AdvancedCommandMenuMod: Subscribed to all events");
     }
 
     void OnDisable() {
+        Logger.Write("AdvancedCommandMenuMod: OnDisable called");
+        InputListener.OnInsertPress -= this.ToggleMenu;
         InputListener.OnMPress -= this.ToggleMenu;
         InputListener.OnNumpad8Press -= this.NavigateUp;
         InputListener.OnNumpad2Press -= this.NavigateDown;
@@ -89,6 +94,7 @@ sealed class AdvancedCommandMenuMod : MonoBehaviour {
             this.CurrentItemIndex = 0;
             this.screenStack.Clear();
         }
+        Logger.Write($"AdvancedCommandMenuMod: Menu toggled to {this.MenuVisible}");
     }
 
     void NavigatePreviousTab() {
@@ -356,6 +362,7 @@ sealed class AdvancedCommandMenuMod : MonoBehaviour {
     void OnGUI() {
         if (!this.MenuVisible) return;
 
+        Logger.Write("AdvancedCommandMenuMod: Drawing menu");
         this.HandleDragging();
 
         GUI.Box(new Rect(this.WindowPosition.x, this.WindowPosition.y, WindowWidth, WindowHeight), GUIContent.none);
